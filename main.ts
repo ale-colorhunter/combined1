@@ -1,6 +1,8 @@
 let movement = 0
 let Moisture = 0
 basic.clearScreen()
+dfplayer.MP3_setSerial(SerialPin.P2, SerialPin.P8)
+dfplayer.setVolume(15)
 serial.setBaudRate(BaudRate.BaudRate115200)
 basic.showIcon(IconNames.Heart)
 basic.forever(function () {
@@ -9,12 +11,15 @@ basic.forever(function () {
     if (movement == 1) {
         serial.writeValue("value", Moisture)
         basic.showNumber(Moisture)
-        if (pins.analogReadPin(AnalogPin.P1) > 100) {
-            music.playTone(131, music.beat(BeatFraction.Double))
+        if (Moisture > 100) {
+            dfplayer.MP3_setSerial(SerialPin.P2, SerialPin.P8)
+            dfplayer.folderPlay(1, 2, dfplayer.yesOrNot.type1)
         } else {
+            dfplayer.MP3_setSerial(SerialPin.P2, SerialPin.P8)
+            dfplayer.folderPlay(1, 1, dfplayer.yesOrNot.type1)
             serial.writeValue("value", Moisture)
             basic.showNumber(Moisture)
-            music.playTone(988, music.beat(BeatFraction.Double))
+            basic.pause(100)
         }
     } else {
         basic.showIcon(IconNames.SmallHeart)
